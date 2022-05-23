@@ -6,18 +6,17 @@ const orderSchema = new mongoose.Schema({
         required: true,
         max: 255
     },
-    doctor_id: {
+    name: {
         type: String,
         required: false,
         max: 255
     },
-    hour: {
-        type: Number,
-        required: true,
-        max: 255
-    },
     amount: {
         type: Number,
+        required: true
+    },
+    time_book: {
+        type: String,
         required: true
     },
     date: {

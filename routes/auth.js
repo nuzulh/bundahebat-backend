@@ -2,6 +2,7 @@ const router = require('express').Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const verify = require('./verifyToken');
 
 router.post('/register', async (req, res) => {
     const emailExist = await User.findOne({email: req.body.email});
@@ -34,7 +35,16 @@ router.post('/login', async (req, res) => {
     if (!validPass) return res.status(400).send('Password salah!');
 
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-    res.header('auth-token'. token).send(token);
+    res.header('auth-token', token).send(token);
+});
+
+router.get('/:id', verify, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        res.send(user);
+    } catch(err) {
+        res.status(400).send(err);
+    }
 });
 
 module.exports = router;

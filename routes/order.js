@@ -22,16 +22,16 @@ router.get('/:id', verify, async (req, res) => {
 });
 
 router.post('/', verify, async (req, res) => {
-    const doctor = await Doctor.findById(req.body.doctor_id);
-
-    const order = new Order({
-        user_id: req.user._id,
-        doctor_id: doctor._id,
-        hour: req.body.hour,
-        amount: req.body.hour * doctor.price
-    });
-
     try {
+        const doctor = await Doctor.findById(req.body.doctor_id);
+    
+        const order = new Order({
+            user_id: req.user._id,
+            name: doctor.name,
+            amount: doctor.price,
+            time_book: req.body.time_book
+        });
+
         const savedOrder = await order.save();
         res.send({order: order._id}); 
     } catch(err) {
